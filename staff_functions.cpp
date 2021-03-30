@@ -1,35 +1,50 @@
 #include <iostream>
+#include "File_system.cpp"
+
 using namespace std;
 class menu {
     public:
         void memu(int code){
+			cout << '\n';
 			switch (code)
 					{
 					case 0:
 						cout << "Выход";
 						break;
-					case 1:
-						cout << "Red";
-						break;
+					case 1:{
+							FileSystem qwe("data/main.txt");
+							cout << qwe.ScanPerson();
+							break;
+						}
 					case 2:
 						cout << "Pink";
-						break;
+						break;	
 					case 3:
-						cout << "Blue";
-						break;
+						{
+							FileSystem qwe("data/main.txt");
+							cout << qwe.GetPersonFromFile();
+							break;
+						}
+					case 4:
+						{
+							FileSystem qwe("data/main.txt");
+							cout << qwe.countLines();
+							break;
+						}
 					default:
 						cout << "Ошибка ввода повторите ввод";
 						break;
 					}     
 	        }
-		void echo_menu(){
-			cout << "\n";
-			cout << "\033[31m0: выход;\033[0m"<< "\n";
-			cout << "\033[32m1: функция 1;\033[0m"<< "\n";
-			cout << "\033[33m2: функция 2;\033[0m"<< "\n";
-			cout << "\033[34m3: функция 3;\033[0m"<< "\n";
-			cout << "Введите код: >> " ;
+		void echo_menu(){			
+			cout << '\n';
+			cout << "\033[32m1: Добавление информации в файл;\033[0m"<< "\n";
+			cout << "\033[33m2: Удаление информации из файла;\033[0m"<< "\n";
+			cout << "\033[34m3: Вывод людей в файле;\033[0m"<< "\n";
+			cout << "\033[34m4: Колличество строк в файле;\033[0m"<< "\n";
 
+			cout << "\033[31m0: выход;\033[0m"<< "\n";
+			cout << "Введите код: >> " ;
 		}
 
 };
