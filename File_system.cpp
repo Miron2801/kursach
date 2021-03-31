@@ -26,8 +26,9 @@ class FileSystem {
                                   pre = ch; 
                                   if ( ch == '\n' ) 
                                               CountLines++;
-                                  cout << char(ch);
                         }
+                fclose(file);
+                file = fopen(FileName, "r");
             
             return CountLines;
         }
@@ -75,23 +76,32 @@ class FileSystem {
             return 0;
         }
         int GetPersonFromFile(){
-            person Student;
-            fscanf(file,"%s%s%s%d%d%d%s%d%s%s%s%s",
-               Student.FIO.Name,
-               Student.FIO.Family,
-               Student.FIO.Sec_name,
-               &Student.Date_birth.day,
-               &Student.Date_birth.mounth,
-               &Student.Date_birth.year,
-               Student.Gender,
-               &Student.inst.YearAdmission,
-               Student.inst.institut,
-               Student.inst.kafedra,
-               Student.inst.StudyGroup,
-               Student.inst.CreditNumber
-               );
+                int cnt_lines = countLines();
+                string buf;
+                person Student;
+                while(!feof( file )){
+                    getline(file, buf);
+                            sscanf(
+                                string,
+                                "%s%s%s%d%d%d%s%d%s%s%s%s",
+                                Student.FIO.Name,
+                                Student.FIO.Family,
+                                Student.FIO.Sec_name,
+                                &Student.Date_birth.day,
+                                &Student.Date_birth.mounth,
+                                &Student.Date_birth.year,
+                                Student.Gender,
+                                &Student.inst.YearAdmission,
+                                Student.inst.institut,
+                                Student.inst.kafedra,
+                                Student.inst.StudyGroup,
+                                Student.inst.CreditNumber
+                        );
+                     EchoStudent(Student);
 
-            EchoStudent(Student);
+                
+                               
+                 }
             return 0;
             
         }
