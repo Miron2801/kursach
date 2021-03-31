@@ -1,17 +1,15 @@
-#define MAX_COLLUMS_IN_FILE 80
-
 #include "models.cpp"
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
-
 using namespace std;
 class FileSystem {
     public:
         FILE *file;
         char *FileName;
+
         FileSystem(char* file_name){
-            file = fopen(FileName, "r");
+            file = fopen(file_name, "r");
             FileName = file_name;
         }
         	
@@ -22,13 +20,13 @@ class FileSystem {
 
         int  countLines()
         {
-               int CountLines;
+               int CountLines = 0;
                int ch, pre = EOF; 
                while ( ( ch = fgetc(file) ) != EOF ) { 
-                        pre = ch; 
-                        if ( ch == '\n' ) 
-                                CountLines++;
-                    
+                                  pre = ch; 
+                                  if ( ch == '\n' ) 
+                                              CountLines++;
+                                  cout << char(ch);
                         }
             
             return CountLines;
@@ -57,7 +55,7 @@ class FileSystem {
                     scanf("%s", Student.Gender);  
                     printf("\033[0m");
                 printf("Введите год поступления в учебное заведение студента >>  \033[32m");
-                    scanf("%d",&Student.inst.УearAdmission); 
+                    scanf("%d",&Student.inst.YearAdmission); 
                     printf("\033[0m");
                 printf("Введите название института студента >>  \033[32m");
                     scanf("%s", Student.inst.institut); 
@@ -86,7 +84,7 @@ class FileSystem {
                &Student.Date_birth.mounth,
                &Student.Date_birth.year,
                Student.Gender,
-               &Student.inst.УearAdmission,
+               &Student.inst.YearAdmission,
                Student.inst.institut,
                Student.inst.kafedra,
                Student.inst.StudyGroup,

@@ -21,14 +21,14 @@ class menu {
 						break;	
 					case 3:
 						{
-							FileSystem qwe("data/main.txt");
-							cout << qwe.GetPersonFromFile();
+							FileSystem FS("data/main.txt");
+							cout << FS.GetPersonFromFile();
 							break;
 						}
 					case 4:
 						{
-							FileSystem qwe("data/main.txt");
-							cout << qwe.countLines();
+							FileSystem FS("data/main.txt");
+							cout << FS.countLines();
 							break;
 						}
 					default:
@@ -42,6 +42,7 @@ class menu {
 			cout << "\033[33m2: Удаление информации из файла;\033[0m"<< "\n";
 			cout << "\033[34m3: Вывод людей в файле;\033[0m"<< "\n";
 			cout << "\033[34m4: Колличество строк в файле;\033[0m"<< "\n";
+
 
 			cout << "\033[31m0: выход;\033[0m"<< "\n";
 			cout << "Введите код: >> " ;

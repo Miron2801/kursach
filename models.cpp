@@ -1,5 +1,4 @@
-#include "iostream"
-#include <string>
+#include <iostream>
 using namespace std;
 
 struct Date_birth{
@@ -10,7 +9,7 @@ struct Date_birth{
 struct inst{
     char institut[10];
     char kafedra[10];
-    int УearAdmission = 0;
+    int YearAdmission = 0;
     char StudyGroup[20];
     char CreditNumber[7];
 };
@@ -44,7 +43,7 @@ int EchoStudent(struct person student){
     cout << "|" << student.FIO.Family << " "<< student.FIO.Name << " "<<student.FIO.Sec_name << "|";
     cout << student.Date_birth.day<< "." << student.Date_birth.mounth << "." <<student.Date_birth.year << "|";
     cout << student.Gender << "|";
-    cout << student.inst.УearAdmission << "|" << student.inst.institut << "|" << student.inst.kafedra << "|";
+    cout << student.inst.YearAdmission << "|" << student.inst.institut << "|" << student.inst.kafedra << "|";
     cout << student.inst.StudyGroup << "|" << student.inst.CreditNumber<<"|\n";
     cout << "+--------------------------------------------------------------------------------------+" << '\n';
      
