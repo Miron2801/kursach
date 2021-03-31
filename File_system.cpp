@@ -77,12 +77,12 @@ class FileSystem {
         }
         int GetPersonFromFile(){
                 int cnt_lines = countLines();
-                string buf;
+                char buf[256];
                 person Student;
                 while(!feof( file )){
-                    getline(file, buf);
+                    fgets(buf,sizeof(buf),file);
                             sscanf(
-                                string,
+                                buf,
                                 "%s%s%s%d%d%d%s%d%s%s%s%s",
                                 Student.FIO.Name,
                                 Student.FIO.Family,
