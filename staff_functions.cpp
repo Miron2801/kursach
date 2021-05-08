@@ -12,8 +12,8 @@ class menu {
 						cout << "Выход";
 						break;
 					case 1:{
-							FileSystem qwe("data/main.txt");
-							cout << qwe.ScanPerson();
+							FileSystem FS("data/main.txt");
+							cout << FS.ScanPerson();
 							break;
 						}
 					case 2:

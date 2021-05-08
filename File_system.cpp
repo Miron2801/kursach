@@ -76,11 +76,15 @@ class FileSystem {
             return 0;
         }
         int GetPersonFromFile(){
+                char *estr;
+
                 int cnt_lines = countLines();
                 char buf[256];
                 person Student;
+                cout << "+--------------------------------------------------------------------------------------+" << '\n';
+
                 while(!feof( file )){
-                    fgets(buf,sizeof(buf),file);
+                    estr = fgets(buf,sizeof(buf),file);
                             sscanf(
                                 buf,
                                 "%s%s%s%d%d%d%s%d%s%s%s%s",
@@ -97,10 +101,8 @@ class FileSystem {
                                 Student.inst.StudyGroup,
                                 Student.inst.CreditNumber
                         );
-                     EchoStudent(Student);
 
-                
-                               
+                     EchoStudent(Student);         
                  }
             return 0;
             
