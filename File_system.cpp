@@ -70,8 +70,12 @@ class FileSystem {
                 printf("Введите номер зачетной книги студента >>  \033[32m");
                     scanf("%s", Student.inst.CreditNumber); 
                     printf("\033[0m\n");
+                FILE *file2 = NULL;
+                file2 = fopen("data.bin", "wb");
+                fwrite(&Student, sizeof(person), 1, file2);
+                fclose(file2);
 
-                EchoStudent(Student);
+                //EchoStudent(Student);
 
             return 0;
         }
@@ -82,28 +86,11 @@ class FileSystem {
                 char buf[256];
                 person Student;
                 cout << "+--------------------------------------------------------------------------------------+" << '\n';
-
-                while(!feof( file )){
-                    estr = fgets(buf,sizeof(buf),file);
-                            sscanf(
-                                buf,
-                                "%s%s%s%d%d%d%s%d%s%s%s%s",
-                                Student.FIO.Name,
-                                Student.FIO.Family,
-                                Student.FIO.Sec_name,
-                                &Student.Date_birth.day,
-                                &Student.Date_birth.mounth,
-                                &Student.Date_birth.year,
-                                Student.Gender,
-                                &Student.inst.YearAdmission,
-                                Student.inst.institut,
-                                Student.inst.kafedra,
-                                Student.inst.StudyGroup,
-                                Student.inst.CreditNumber
-                        );
-
-                     EchoStudent(Student);         
-                 }
+                
+                FILE *file2 = NULL;
+                file2 = fopen("data.bin", "rb");
+                fread(&Student, sizeof(person), 1, file2);
+                EchoStudent(Student);         
             return 0;
             
         }
