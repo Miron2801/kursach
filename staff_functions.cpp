@@ -12,7 +12,7 @@ class menu {
 						cout << "Выход";
 						break;
 					case 1:{
-							FileSystem FS("data/main.txt");
+							FileSystem FS("data/data.bin");
 							cout << FS.ScanPerson();
 							break;
 						}
@@ -21,13 +21,13 @@ class menu {
 						break;	
 					case 3:
 						{
-							FileSystem FS("data/main.txt");
+							FileSystem FS("data/data.bin");
 							cout << FS.GetPersonFromFile();
 							break;
 						}
 					case 4:
 						{
-							FileSystem FS("data/main.txt");
+							FileSystem FS("data/data.bin");
 							cout << FS.countLines();
 							break;
 						}

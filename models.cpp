@@ -6,6 +6,12 @@ struct Date_birth{
     int mounth = -1;
     int year =-1;
 };
+
+
+
+
+
+
 struct inst{
     char institut[10];
     char kafedra[10];

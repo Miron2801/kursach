@@ -2,17 +2,19 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <string>
+
 using namespace std;
 class FileSystem {
     public:
-        FILE *file;
+        FILE *file = NULL;
         char *FileName;
-
+        int count_users = 0;
         FileSystem(char* file_name){
-            file = fopen(file_name, "r");
-            FileName = file_name;
-        }
-        	
+                file = fopen(file_name, "ab+");
+                FileName = file_name;
+        } 
+
         ~FileSystem()
 	    {
             fclose(file);
@@ -20,18 +22,33 @@ class FileSystem {
 
         int  countLines()
         {
-               int CountLines = 0;
-               int ch, pre = EOF; 
-               while ( ( ch = fgetc(file) ) != EOF ) { 
-                                  pre = ch; 
-                                  if ( ch == '\n' ) 
-                                              CountLines++;
-                        }
-                fclose(file);
-                file = fopen(FileName, "r");
-            
-            return CountLines;
-        }
+
+                                FILE *file2_R = NULL;
+                                file2_R = fopen(FileName, "rb");
+                                if (file2_R == NULL) {
+                                        printf("Файл не существует\n");
+                                        return -1;
+                                        };
+                                
+                                unsigned long position = ftell(file2_R); 
+                                int count_students = 0;
+                                while (1){
+                                                person Student;
+                                                
+                                                fread(&Student, sizeof(person), 1, file2_R);
+                                                if(ftell(file2_R) == position)
+                                                    break;
+                                                fseek(file2_R , position + sizeof(person), SEEK_SET );
+                                                if(ftell(file2_R) == position)
+                                                    break;
+                                                position = ftell(file2_R);
+                                                count_students++;
+                                            }
+                                        
+                fclose(file2_R);  
+                count_users = count_students;
+                return count_students;       
+            }
         int ScanPerson(){
                 person Student;
                 printf("Введите имя студента >> \033[32m");
@@ -70,27 +87,37 @@ class FileSystem {
                 printf("Введите номер зачетной книги студента >>  \033[32m");
                     scanf("%s", Student.inst.CreditNumber); 
                     printf("\033[0m\n");
-                FILE *file2 = NULL;
-                file2 = fopen("data.bin", "wb");
-                fwrite(&Student, sizeof(person), 1, file2);
-                fclose(file2);
 
-                //EchoStudent(Student);
+                fwrite(&Student, sizeof(person), 1, file);
+
 
             return 0;
         }
         int GetPersonFromFile(){
-                char *estr;
-
-                int cnt_lines = countLines();
-                char buf[256];
-                person Student;
                 cout << "+--------------------------------------------------------------------------------------+" << '\n';
                 
-                FILE *file2 = NULL;
-                file2 = fopen("data.bin", "rb");
-                fread(&Student, sizeof(person), 1, file2);
-                EchoStudent(Student);         
+                FILE *file2_R = NULL;
+                file2_R = fopen(FileName, "rb");
+                if (file2_R == NULL) {
+                        printf("Файл не существует\n");
+                        return -1;
+                        };
+                
+                unsigned long position = ftell(file2_R); 
+                    while (1){
+                        person Student;
+                        
+                        fread(&Student, sizeof(person), 1, file2_R);
+                        if(ftell(file2_R) == position)
+                            break;
+                        EchoStudent(Student); 
+                        fseek(file2_R , position + sizeof(person), SEEK_SET );
+                        if(ftell(file2_R) == position)
+                            break;
+                        position = ftell(file2_R);
+                    }
+                
+                fclose(file2_R);        
             return 0;
             
         }
