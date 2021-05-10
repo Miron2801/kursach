@@ -158,27 +158,40 @@ redo_act:       for (int i=0; i < count_users; i++){
   
                 
                 FILE *file_edit = NULL;
-                file_edit = fopen("data/dara2.bin", "wb");
+                file_edit = fopen("data/data_buff.bin", "wb");
                 fseek(file2_R, 0, SEEK_SET);
-                position = ftell(file2_R);
 
+                unsigned long int pos_r = ftell (file2_R);
+                unsigned long int pos_w = ftell(file_edit);
                 for (int i=0; i < count_users; i++){
                         person_model Student;
 
                         fread(&Student, sizeof(person_model), 1, file2_R);
-                        if(ftell(file2_R) == position)
+                        if(ftell(file2_R) == pos_r)
                             break;
-                        
-                        fwrite(&Student, sizeof(person_model), 1, file_edit);
-                        fseek(file_edit , position + sizeof(person_model), SEEK_SET );
+                        if(i == changer){
+                                 fseek(file2_R , pos_r + sizeof(person_model), SEEK_SET );
+                                 pos_r = ftell(file2_R);
+                                 continue;
+                        }
 
-                        fseek(file2_R , position + sizeof(person_model), SEEK_SET );
-                        position = ftell(file2_R);
+                        fwrite(&Student, sizeof(person_model), 1, file_edit);
+                        fseek(file_edit , pos_w + sizeof(person_model), SEEK_SET );
+                        fseek(file2_R , pos_r + sizeof(person_model), SEEK_SET );
+                        pos_r = ftell(file2_R);
+                        pos_w = ftell(file_edit);
 
 
                 }
-            fclose(file_edit);
-
+                fclose(file2_R);
+                fclose(file_edit);
+                remove(FileName);
+                rename("data/data_buff.bin", FileName );
+                cout <<"успех\n";
             return 0;
+        }
+        int edit_record(){
+
+
         }
 };
