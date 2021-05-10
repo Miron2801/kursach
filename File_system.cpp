@@ -193,15 +193,18 @@ redo_act:       for (int i=0; i < count_users; i++){
         int edit_record(){
 
 
-                FILE *file2_R = NULL;
+               FILE *file2_R = NULL;
                 file2_R = fopen(FileName, "rb");
                 if (file2_R == NULL) {
                         printf("Файл не существует\n");
                         };
+
+redo_act1:      fseek(file2_R, 0, SEEK_SET);
                 unsigned long position = ftell(file2_R);
                 count_users = countLines(); 
                 system("clear");
-redo_act:       for (int i=0; i < count_users; i++){
+
+                 for (int i=0; i < count_users; i++){
                         person_model Student;
 
                         fread(&Student, sizeof(person_model), 1, file2_R);
@@ -211,50 +214,86 @@ redo_act:       for (int i=0; i < count_users; i++){
                         fseek(file2_R , position + sizeof(person_model), SEEK_SET );
                         position = ftell(file2_R);
                 }
-                cout << "Какого пользовтеля изменить? -1 - отмена >> ";
+                cout << "Какого пользовтеля изменить? \033[31m-1 - отмена \033[0m>> \033[33m";
                 int changer = 0;
-                cin >>changer;
+                cin >> changer;
+                cout << "\033[0m\n";
                 if(changer == -1){
                         cout << "Выход\n";
                         return -1;
                 }
                 if (changer > count_users){
                         cout << "Повторите ввод данные некорректны\n";
-                        goto redo_act;
+                        goto redo_act1;
                 }
-
-  
-                
-                FILE *file_edit = NULL;
-                file_edit = fopen("data/data_buff.bin", "wb");
-                fseek(file2_R, 0, SEEK_SET);
-
+            
+                fseek(file2_R , 0, SEEK_SET );
                 unsigned long int pos_r = ftell (file2_R);
-                unsigned long int pos_w = ftell(file_edit);
-                for (int i=0; i < count_users; i++){
-                        person_model Student;
+                person_model Student_to_edit;
 
-                        fread(&Student, sizeof(person_model), 1, file2_R);
+                for (int i=0; i < count_users; i++){
+                        fread(&Student_to_edit, sizeof(person_model), 1, file2_R);
                         if(ftell(file2_R) == pos_r)
                             break;
                         if(i == changer){
                                  fseek(file2_R , pos_r + sizeof(person_model), SEEK_SET );
                                  pos_r = ftell(file2_R);
-                                 continue;
+                                 cout << "\n\033[32mВыбран студент: \033[0m\n";
+                                 EchoStudent(Student_to_edit);
+                                 break;
                         }
 
-                        fwrite(&Student, sizeof(person_model), 1, file_edit);
-                        fseek(file_edit , pos_w + sizeof(person_model), SEEK_SET );
                         fseek(file2_R , pos_r + sizeof(person_model), SEEK_SET );
                         pos_r = ftell(file2_R);
-                        pos_w = ftell(file_edit);
 
 
                 }
-                fclose(file2_R);
-                fclose(file_edit);
-                remove(FileName);
-                rename("data/data_buff.bin", FileName );
+                //return 0;
+                char witch;
+reenter_y_n:    cout << "Продолжить редактирование ? y/n>> \033[31m";
+                cin >> witch;
+                cout <<  "\033[0m";
+                if(witch == 'n'){
+                        goto redo_act1;
+                }
+                if(witch != 'y'){
+                    cout << "Ошибка ввода повтор\n";
+                    goto reenter_y_n;
+                }
+                cout << "Редактирование..... 0 для пропсука параметра 1 для редактирования\n";
+                int editpos;
+
+                    printf("Имя студента >> \033[32m");
+                    cin >> editpos;
+                    printf("\033[0m");                
+
+                    if(editpos == 1){
+                            printf("Введите имя студента >> \033[32m");
+                            scanf("%s", Student_to_edit.FIO.Name); 
+                            printf("\033[0m\n");
+                    }
+
+                    printf("Фамилию студента >> \033[32m ");
+                    cin >> editpos;
+                    printf("\033[0m");                
+
+                    if(editpos == 1){
+                                printf("Введите Фамилию студента >> \033[32m ");
+                                scanf("%s", Student_to_edit.FIO.Family);
+                                printf("\033[0m\n");
+                    }     
+                               
+                    printf("Отчество студента >>  \033[32m");
+                    cin >> editpos;
+                    printf("\033[0m");  
+                    if(editpos == 1){
+                        printf("Введите Отчество студента >>  \033[32m");
+                        scanf("%s", Student_to_edit.FIO.Sec_name); 
+                        printf("\033[0m");
+                    }
+
+                    EchoStudent(Student_to_edit);
+            
                 cout <<"успех\n";
             return 0;
 
