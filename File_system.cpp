@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <list>
 
 using namespace std;
 class FileSystem {
@@ -10,6 +11,8 @@ class FileSystem {
         FILE *file = NULL;
         char *FileName;
         int count_users = 0;
+        std::list<person_model> Students;
+
         FileSystem(char* file_name){
                 file = fopen(file_name, "ab+");
                 FileName = file_name;
@@ -33,12 +36,12 @@ class FileSystem {
                                 unsigned long position = ftell(file2_R); 
                                 int count_students = 0;
                                 while (1){
-                                                person Student;
+                                                person_model Student;
                                                 
-                                                fread(&Student, sizeof(person), 1, file2_R);
+                                                fread(&Student, sizeof(person_model), 1, file2_R);
                                                 if(ftell(file2_R) == position)
                                                     break;
-                                                fseek(file2_R , position + sizeof(person), SEEK_SET );
+                                                fseek(file2_R , position + sizeof(person_model), SEEK_SET );
                                                 if(ftell(file2_R) == position)
                                                     break;
                                                 position = ftell(file2_R);
@@ -50,7 +53,7 @@ class FileSystem {
                 return count_students;       
             }
         int ScanPerson(){
-                person Student;
+                person_model Student;
                 printf("Введите имя студента >> \033[32m");
                     scanf("%s", Student.FIO.Name); 
                     printf("\033[0m");
@@ -88,37 +91,41 @@ class FileSystem {
                     scanf("%s", Student.inst.CreditNumber); 
                     printf("\033[0m\n");
 
-                fwrite(&Student, sizeof(person), 1, file);
+                fwrite(&Student, sizeof(person_model), 1, file);
 
 
             return 0;
         }
-        int GetPersonFromFile(){
+        int GetPersonsFromFile(){
                 cout << "+--------------------------------------------------------------------------------------+" << '\n';
                 
                 FILE *file2_R = NULL;
                 file2_R = fopen(FileName, "rb");
                 if (file2_R == NULL) {
                         printf("Файл не существует\n");
-                        return -1;
                         };
-                
-                unsigned long position = ftell(file2_R); 
-                    while (1){
-                        person Student;
-                        
-                        fread(&Student, sizeof(person), 1, file2_R);
+                unsigned long position = ftell(file2_R);
+                count_users = countLines(); 
+                for (int i=0; i < count_users; i++){
+                        person_model Student;
+
+                        fread(&Student, sizeof(person_model), 1, file2_R);
                         if(ftell(file2_R) == position)
                             break;
+                        Students.push_back(Student);
                         EchoStudent(Student); 
-                        fseek(file2_R , position + sizeof(person), SEEK_SET );
-                        if(ftell(file2_R) == position)
-                            break;
+                        fseek(file2_R , position + sizeof(person_model), SEEK_SET );
                         position = ftell(file2_R);
-                    }
+
+
+                }
                 
                 fclose(file2_R);        
             return 0;
             
+        }
+        int delete_person(){
+
+            return 0;
         }
 };

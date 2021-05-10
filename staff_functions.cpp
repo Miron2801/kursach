@@ -22,7 +22,7 @@ class menu {
 					case 3:
 						{
 							FileSystem FS("data/data.bin");
-							cout << FS.GetPersonFromFile();
+							FS.GetPersonsFromFile();
 							break;
 						}
 					case 4:

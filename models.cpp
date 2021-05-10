@@ -31,14 +31,14 @@ struct FIO{
         char Family[20];
         char Sec_name[20];
 };
-struct person{
+struct person_model{
         struct FIO FIO;
         struct Date_birth Date_birth;
         struct inst inst;
         char Gender[8];
         struct sessions sessions[9];
 };
-int EchoStudent(struct person student){
+int EchoStudent(person_model student){
     int exit_code = 0;
     if(!((student.Date_birth.day >= 1) & (student.Date_birth.day  <= 31))) 
         cout << "неверная дата рождения\n";
@@ -54,28 +54,3 @@ int EchoStudent(struct person student){
      
     return exit_code;
 }    
-
-// int main()
-// {
-//     person person;
-//     person.FIO.Name[0] = 'q';
-//     person.FIO.Family[0] = 'q';
-//     person.FIO.Sec_name[0] = 'q';
-//     person.Date_birth.day = 28;
-//     person.Date_birth.mounth = 31;
-//     person.Date_birth.year = 2003;
-//     person.inst.УearAdmission = 2020;
-//     person.inst.institut[0] = 'K';
-//     person.inst.kafedra[0]  = 'K';
-//     person.inst.StudyGroup[0] = 'F';
-//     person.inst.CreditNumber[0] = 'q';
-//     person.Gender[0] = 'q';
-//     person.sessions[0].subj[0].mark = 5;
-//     person.sessions[0].subj[0].name[0] = 'q';
-//     person.sessions[0].subj[1].mark = 5;
-    
-//     EchoStudent(person);
-
-//     return 0;
-
-// }
