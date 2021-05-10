@@ -39,18 +39,32 @@ struct person_model{
         struct sessions sessions[9];
 };
 int EchoStudent(person_model student){
-    int exit_code = 0;
-    if(!((student.Date_birth.day >= 1) & (student.Date_birth.day  <= 31))) 
-        cout << "неверная дата рождения\n";
-    if(!((student.Date_birth.mounth >= 1) & (student.Date_birth.mounth <= 12))) 
-        cout << "неверная дата рождения\n";
+    //if(!(student.Date_birth.day ==-1 && student.Date_birth.mounth==-1 && student.Date_birth.year == -1)){
+                int exit_code = 0;
+                //if(!((student.Date_birth.day >= 1) & (student.Date_birth.day  <= 31))) 
+                //    cout << "неверная дата рождения\n";
+              //  if(!((student.Date_birth.mounth >= 1) & (student.Date_birth.mounth <= 12))) 
+                  //  cout << "неверная дата рождения\n";
 
-    cout << "|" << student.FIO.Family << " "<< student.FIO.Name << " "<<student.FIO.Sec_name << "|";
-    cout << student.Date_birth.day<< "." << student.Date_birth.mounth << "." <<student.Date_birth.year << "|";
-    cout << student.Gender << "|";
-    cout << student.inst.YearAdmission << "|" << student.inst.institut << "|" << student.inst.kafedra << "|";
-    cout << student.inst.StudyGroup << "|" << student.inst.CreditNumber<<"|\n";
-    cout << "+--------------------------------------------------------------------------------------+" << '\n';
-     
-    return exit_code;
+                cout << "|" << student.FIO.Family << " "<< student.FIO.Name << " "<<student.FIO.Sec_name << "|";
+                cout << student.Date_birth.day<< "." << student.Date_birth.mounth << "." <<student.Date_birth.year << "|";
+                cout << student.Gender << "|";
+                cout << student.inst.YearAdmission << "|" << student.inst.institut << "|" << student.inst.kafedra << "|";
+                cout << student.inst.StudyGroup << "|" << student.inst.CreditNumber<<"|\n";
+                cout << "+--------------------------------------------------------------------------------------+" << '\n';
+    //}
+
+    return 0;
 }    
+int EchoStudent_not_full(int counter, person_model student){
+                if(!(student.Date_birth.day ==-1 && student.Date_birth.mounth==-1 && student.Date_birth.year == -1)){
+                    int exit_code = 0;
+               
+                cout << "+-------------------------------------------------+" << '\n';
+
+                cout << "|" << counter << ") "<< student.FIO.Family << " "<< student.FIO.Name << " "<<student.FIO.Sec_name << "|";
+                cout << student.Date_birth.day<< "." << student.Date_birth.mounth << "." <<student.Date_birth.year << "|\n";
+                cout << "+-------------------------------------------------+" << '\n';
+    }
+    return 0;
+}

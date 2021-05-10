@@ -3,7 +3,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <list>
 
 using namespace std;
 class FileSystem {
@@ -11,11 +10,12 @@ class FileSystem {
         FILE *file = NULL;
         char *FileName;
         int count_users = 0;
-        std::list<person_model> Students;
 
         FileSystem(char* file_name){
                 file = fopen(file_name, "ab+");
                 FileName = file_name;
+                count_users = countLines();
+
         } 
 
         ~FileSystem()
@@ -112,7 +112,6 @@ class FileSystem {
                         fread(&Student, sizeof(person_model), 1, file2_R);
                         if(ftell(file2_R) == position)
                             break;
-                        Students.push_back(Student);
                         EchoStudent(Student); 
                         fseek(file2_R , position + sizeof(person_model), SEEK_SET );
                         position = ftell(file2_R);
@@ -125,6 +124,60 @@ class FileSystem {
             
         }
         int delete_person(){
+                FILE *file2_R = NULL;
+                file2_R = fopen(FileName, "rb");
+                if (file2_R == NULL) {
+                        printf("Файл не существует\n");
+                        };
+                unsigned long position = ftell(file2_R);
+                count_users = countLines(); 
+                system("clear");
+               // cout << "Какого пользовтеля удалить?"
+redo_act:       for (int i=0; i < count_users; i++){
+                        person_model Student;
+
+                        fread(&Student, sizeof(person_model), 1, file2_R);
+                        if(ftell(file2_R) == position)
+                            break;
+                        EchoStudent_not_full(i, Student);
+                        fseek(file2_R , position + sizeof(person_model), SEEK_SET );
+                        position = ftell(file2_R);
+                }
+                cout << "Какого пользовтеля удалить? -1 - отмена >> ";
+                int changer = 0;
+                cin >>changer;
+                if(changer == -1){
+                        cout << "Выход\n";
+                        return -1;
+                }
+                if (changer > count_users){
+                        cout << "Повторите ввод данные некорректны\n";
+                        goto redo_act;
+                }
+
+  
+                
+                FILE *file_edit = NULL;
+                file_edit = fopen("data/dara2.bin", "wb");
+                fseek(file2_R, 0, SEEK_SET);
+                position = ftell(file2_R);
+
+                for (int i=0; i < count_users; i++){
+                        person_model Student;
+
+                        fread(&Student, sizeof(person_model), 1, file2_R);
+                        if(ftell(file2_R) == position)
+                            break;
+                        
+                        fwrite(&Student, sizeof(person_model), 1, file_edit);
+                        fseek(file_edit , position + sizeof(person_model), SEEK_SET );
+
+                        fseek(file2_R , position + sizeof(person_model), SEEK_SET );
+                        position = ftell(file2_R);
+
+
+                }
+            fclose(file_edit);
 
             return 0;
         }

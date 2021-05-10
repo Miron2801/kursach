@@ -16,9 +16,11 @@ class menu {
 							cout << FS.ScanPerson();
 							break;
 						}
-					case 2:
-						cout << "Pink";
-						break;	
+					case 2:{
+							FileSystem FS("data/data.bin");
+							cout << FS.delete_person();
+							break;	
+							}
 					case 3:
 						{
 							FileSystem FS("data/data.bin");
