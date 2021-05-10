@@ -150,7 +150,7 @@ redo_act:       for (int i=0; i < count_users; i++){
                         cout << "Выход\n";
                         return -1;
                 }
-                if (changer > count_users){
+                if (changer > count_users | changer < 0){
                         cout << "Повторите ввод данные некорректны\n";
                         goto redo_act;
                 }
@@ -192,6 +192,71 @@ redo_act:       for (int i=0; i < count_users; i++){
         }
         int edit_record(){
 
+
+                FILE *file2_R = NULL;
+                file2_R = fopen(FileName, "rb");
+                if (file2_R == NULL) {
+                        printf("Файл не существует\n");
+                        };
+                unsigned long position = ftell(file2_R);
+                count_users = countLines(); 
+                system("clear");
+redo_act:       for (int i=0; i < count_users; i++){
+                        person_model Student;
+
+                        fread(&Student, sizeof(person_model), 1, file2_R);
+                        if(ftell(file2_R) == position)
+                            break;
+                        EchoStudent_not_full(i, Student);
+                        fseek(file2_R , position + sizeof(person_model), SEEK_SET );
+                        position = ftell(file2_R);
+                }
+                cout << "Какого пользовтеля изменить? -1 - отмена >> ";
+                int changer = 0;
+                cin >>changer;
+                if(changer == -1){
+                        cout << "Выход\n";
+                        return -1;
+                }
+                if (changer > count_users){
+                        cout << "Повторите ввод данные некорректны\n";
+                        goto redo_act;
+                }
+
+  
+                
+                FILE *file_edit = NULL;
+                file_edit = fopen("data/data_buff.bin", "wb");
+                fseek(file2_R, 0, SEEK_SET);
+
+                unsigned long int pos_r = ftell (file2_R);
+                unsigned long int pos_w = ftell(file_edit);
+                for (int i=0; i < count_users; i++){
+                        person_model Student;
+
+                        fread(&Student, sizeof(person_model), 1, file2_R);
+                        if(ftell(file2_R) == pos_r)
+                            break;
+                        if(i == changer){
+                                 fseek(file2_R , pos_r + sizeof(person_model), SEEK_SET );
+                                 pos_r = ftell(file2_R);
+                                 continue;
+                        }
+
+                        fwrite(&Student, sizeof(person_model), 1, file_edit);
+                        fseek(file_edit , pos_w + sizeof(person_model), SEEK_SET );
+                        fseek(file2_R , pos_r + sizeof(person_model), SEEK_SET );
+                        pos_r = ftell(file2_R);
+                        pos_w = ftell(file_edit);
+
+
+                }
+                fclose(file2_R);
+                fclose(file_edit);
+                remove(FileName);
+                rename("data/data_buff.bin", FileName );
+                cout <<"успех\n";
+            return 0;
 
         }
 };
