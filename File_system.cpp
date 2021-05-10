@@ -248,7 +248,6 @@ redo_act1:      fseek(file2_R, 0, SEEK_SET);
 
 
                 }
-                //return 0;
                 char witch;
 reenter_y_n:    cout << "Продолжить редактирование ? y/n>> \033[31m";
                 cin >> witch;
@@ -289,11 +288,121 @@ reenter_y_n:    cout << "Продолжить редактирование ? y/n
                     if(editpos == 1){
                         printf("Введите Отчество студента >>  \033[32m");
                         scanf("%s", Student_to_edit.FIO.Sec_name); 
-                        printf("\033[0m");
+                        printf("\033[0m\n");
                     }
 
-                    EchoStudent(Student_to_edit);
-            
+                    printf("день рождения студента >>  \033[32m");
+                    cin >> editpos;
+                    printf("\033[0m");  
+                    if(editpos == 1){
+                        printf("Введите день рождения студента >>  \033[32m");
+                        scanf("%d",&Student_to_edit.Date_birth.day); 
+                        printf("\033[0m\n");
+                    }
+
+                    printf("месяц рождения студента >>  \033[32m");
+                    cin >> editpos;
+                    printf("\033[0m");  
+                    if(editpos == 1){
+                        printf("Введите Омесяц рождения студента >> \033[32m");
+                        scanf("%d",&Student_to_edit.Date_birth.mounth); 
+                        printf("\033[0m\n");
+                    }
+
+                    printf("год рождения студента >> \033[32m");
+                    cin >> editpos;
+                    printf("\033[0m");  
+                    if(editpos == 1){
+                        printf("Введите год рождения студента >>  \033[32m");
+                        scanf("%d",&Student_to_edit.Date_birth.year);
+                        printf("\033[0m\n");
+                    }
+
+
+                    printf("гендерную принадлежность студента >>  \033[32m");
+                    cin >> editpos;
+                    printf("\033[0m");  
+                    if(editpos == 1){
+                        printf("Введите гендерную принадлежность студента >>  \033[32m");
+                        scanf("%s", Student_to_edit.Gender);  
+                        printf("\033[0m\n");
+                    }
+
+                    printf("год поступления в учебное заведение студента >> \033[32m");
+                    cin >> editpos;
+                    printf("\033[0m");  
+                    if(editpos == 1){
+                        printf("Введите год поступления в учебное заведение студента >>  \033[32m");
+                        scanf("%d",&Student_to_edit.inst.YearAdmission);
+                        printf("\033[0m\n");
+                    }
+
+
+                    printf("название института студента >> \033[32m");
+                    cin >> editpos;
+                    printf("\033[0m");  
+                    if(editpos == 1){
+                        printf("Введите название института студента >>  \033[32m");
+                        scanf("%s", Student_to_edit.inst.institut); 
+                        printf("\033[0m\n");
+                    }
+
+                    printf("кафедру студента >> \033[32m");
+                    cin >> editpos;
+                    printf("\033[0m");  
+                    if(editpos == 1){
+                        printf("Введите кафедру студента >> \033[32m");
+                        scanf("%s", Student_to_edit.inst.kafedra);
+                        printf("\033[0m\n");
+                    }
+
+                    printf("учебную группу студента >> \033[32m");
+                    cin >> editpos;
+                    printf("\033[0m");  
+                    if(editpos == 1){
+                        printf("Введите название института студента >>  \033[32m");
+                        scanf("%s", Student_to_edit.inst.StudyGroup);
+                        printf("\033[0m\n");
+                    }
+
+                    printf("номер зачетной книги студента >> \033[32m");
+                    cin >> editpos;
+                    printf("\033[0m");  
+                    if(editpos == 1){
+                        printf("Введите номер зачетной книги студента >>  \033[32m");
+                        scanf("%s", Student_to_edit.inst.CreditNumber);
+                        printf("\033[0m\n");
+                    }
+                EchoStudent(Student_to_edit);
+
+                FILE *file_edit = NULL;
+                file_edit = fopen("data/data_buff.bin", "wb");
+                fseek(file2_R, 0, SEEK_SET);
+                fseek(file_edit, 0, SEEK_SET);
+                unsigned long int pos_w = ftell(file_edit);
+                pos_r = ftell (file2_R);
+                pos_w = ftell (file_edit);
+                for (int i=0; i < count_users; i++){
+                        person_model Student;
+                        fread(&Student, sizeof(person_model), 1, file2_R);
+                        if(ftell(file2_R) == pos_r)
+                            break;
+                        if(i == changer)
+                                 fwrite(&Student_to_edit, sizeof(person_model), 1, file_edit);
+                        else
+                                 fwrite(&Student, sizeof(person_model), 1, file_edit);
+                        
+                        fseek(file_edit , pos_w + sizeof(person_model), SEEK_SET );
+                        fseek(file2_R , pos_r + sizeof(person_model), SEEK_SET );
+                        pos_r = ftell(file2_R);
+                        pos_w = ftell(file_edit);
+
+
+                }
+                fclose(file2_R);
+                fclose(file_edit);
+                remove(FileName);
+                rename("data/data_buff.bin", FileName );            
                 cout <<"успех\n";
             return 0;
 
