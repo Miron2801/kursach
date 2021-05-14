@@ -91,6 +91,53 @@ class FileSystem {
                     scanf("%s", Student.inst.CreditNumber); 
                     printf("\033[0m\n");
 
+redo_input:     cout << "Продолжить ввод оценок? y/n >> \n";
+                char continue_inp;
+                cin >> continue_inp;
+                cout << '\n';
+                if(continue_inp == 'n'){
+                    cout << "Данные о студенте записаны\n";
+
+                    fwrite(&Student, sizeof(person_model), 1, file);
+                    return 0;
+                }
+                if(continue_inp != 'y'){
+                    cout << "\033[31m Ошибка ввода повтори ввод\n\033[0m";
+                    goto redo_input;
+                }
+                cout << "Начало ввода оценок\n";
+                for(int session = 0; session < 9; session++){
+                                char continue_inp;
+             redo_inp_ses:      cout << "Начало ввода \033[32m"<< session + 1<<"\033[0m сессии продолжить? y/n/e >> ";
+                                         
+                                cin >> continue_inp;
+                                if(continue_inp == 'n'){
+                                        cout << "\033[33m Пропуск ввода сессии\n\033[0m";
+                                        continue;                                    
+                                }
+
+                                if(continue_inp == 'y'){
+                                    for (int subj = 0; subj < 10; subj++){
+                                                
+                                                cout << "Введите название \033[32m"<< subj+1 <<"\033[0m предмета >> \033[32m";
+                                                cin >> Student.sessions[session].subj[subj].name;                              
+                                                cout << "\033[0m";
+                                                cout << "Введите оценку за предмет \033[31m "<< Student.sessions[session].subj[subj].name<<"\033[0m >> \033[32m";
+                                                cin >> Student.sessions[session].subj[subj].mark;
+                                                cout << "\033[0m";
+                                                cout << "\033[31mКонец ввода предмета \n\033[0m";
+                                        
+                                            }
+                                }
+                                else {
+                                    cout << "\033[31m Ошибка ввода повтори ввод\n\033[0m";
+                                    goto redo_inp_ses;
+                                }
+
+                }
+
+
+
                 fwrite(&Student, sizeof(person_model), 1, file);
 
 

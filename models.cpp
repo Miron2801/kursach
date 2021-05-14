@@ -41,10 +41,7 @@ struct person_model{
 int EchoStudent(person_model student){
     //if(!(student.Date_birth.day ==-1 && student.Date_birth.mounth==-1 && student.Date_birth.year == -1)){
                 int exit_code = 0;
-                //if(!((student.Date_birth.day >= 1) & (student.Date_birth.day  <= 31))) 
-                //    cout << "неверная дата рождения\n";
-              //  if(!((student.Date_birth.mounth >= 1) & (student.Date_birth.mounth <= 12))) 
-                  //  cout << "неверная дата рождения\n";
+ 
 
                 cout << "|" << student.FIO.Family << " "<< student.FIO.Name << " "<<student.FIO.Sec_name << "|";
                 cout << student.Date_birth.day<< "." << student.Date_birth.mounth << "." <<student.Date_birth.year << "|";
