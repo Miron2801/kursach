@@ -1,10 +1,10 @@
 #include <iostream>
 #include "File_system.cpp"
-#include <unistd.h>
 
 using namespace std;
-class menu {
+class menu{
     public:
+		
         void memu(int code){
 			cout << '\n';
 			switch (code)
@@ -13,36 +13,41 @@ class menu {
 						cout << "Выход";
 						break;
 					case 1:{
-							FileSystem FS("data/data.bin");
-							cout << FS.ScanPerson();
+							FileSystem *FS = new FileSystem("data/data.bin");
+							cout << FS->ScanPerson();
+							delete FS;
 							break;
 						}
 					case 2:{
-							FileSystem FS("data/data.bin");
-							cout << FS.delete_person();
+							FileSystem *FS = new FileSystem("data/data.bin");
+							cout << FS->delete_person();
+							delete FS;
 							break;	
 							}
 					case 3:{
-							FileSystem FS("data/data.bin");
-							cout << FS.out_tabel();
+							FileSystem *FS = new FileSystem("data/data.bin");
+							cout << FS->out_tabel();
+							delete FS;
 							break;	
 							}
 					case 4:
 						{
-							FileSystem FS("data/data.bin");
-							FS.edit_record();
+							FileSystem *FS = new FileSystem("data/data.bin");
+							FS->edit_record();
+							delete FS;
 							break;
 						}
 					case 5:
 						{
-							FileSystem FS("data/data.bin");
-							FS.GetPersonsFromFile();
-							break;
+							FileSystem *FS = new FileSystem("data/data.bin");
+							FS->GetPersonsFromFile();
+							delete FS;
 						}
 					case 6:
 						{
-							FileSystem FS("data/data.bin");
-							cout << FS.countLines();
+							FileSystem *FS = new FileSystem("data/data.bin");
+							cout << FS->countLines();
+							delete FS;
 							break;
 						}
 					default:
