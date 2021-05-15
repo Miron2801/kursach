@@ -5,7 +5,7 @@
 #include <string>
 
 using namespace std;
-class FileSystem {
+class FileSystem : models  {
     public:
         FILE *file = NULL;
         char *FileName;
@@ -450,17 +450,37 @@ input_continue111:  cout << "Продолжить редактирование �
                             
                             for(int session = 0; session < 9; session++){   
                                     char continue_req;
-        edit_con_label:             cout << "Начало редактирования оценок " << session + 1 << " сессии\n продолжить?"; 
+        edit_con_label:             cout << "Начало редактирования оценок " << session + 1 << " сессии продолжить? y/n/a >> ";
+                                    cin >>  continue_req; 
                                     if(continue_req == 'n')
                                             continue;
-                                    if(continue_req != 'y'){
-                                        cout << "Ошиюка ввода повторите\n";
+                                    if(continue_req == 'a'){
+                                        int flag = 0;
+                                        cout << "Режим добавления экзамена к сессии\n";
+                                         for (int subj = 0; subj < 10; subj++){
+                                            if(Student_to_edit.sessions[session].subj[subj].mark == -1){
+                                                cout << "Какой предмет добавить? >> "; 
+                                                cin >> Student_to_edit.sessions[session].subj[subj].name;
+                                                cout << "Введите оценку по предмету \033[33m" << Student_to_edit.sessions[session].subj[subj].name << "\033[0m >> ";
+                                                cin >> Student_to_edit.sessions[session].subj[subj].mark;
+                                                flag = 1;
+                                                break;
+                                            }
+                                        }
+                                        if(flag == 0){
+                                            cout << "Невозможно добавить предмет к сессии\n";
+                                            continue;
+                                        }
+
+                                    }   
+                                    if(continue_req != 'y' && continue_req != 'a'){
+                                        cout << "Ошибка ввода повторите\n";
                                         goto edit_con_label;
                                     }                                 
                                     for (int subj = 0; subj < 10; subj++){
                                             if(Student_to_edit.sessions[session].subj[subj].mark != -1){
                                               char need_to_continue;
-                  redo_act2:                  cout << "Редактирование оценки по предмету: " << Student_to_edit.sessions[session].subj[subj].name << '\n';
+                  redo_act2:                  cout << "Редактирование оценки по предмету: \033[33m" << Student_to_edit.sessions[session].subj[subj].name << "\033[0m\n";
                                               cout << "Продолжить редактирование? y/n >> ";
                                               cin >> need_to_continue;
                                               if(need_to_continue == 'n'){
@@ -468,8 +488,9 @@ input_continue111:  cout << "Продолжить редактирование �
                                               }
                                               if(need_to_continue == 'y'){
                                                     int mark_to_write =0;
-                                                    cout << "Введите новую оценку по предмету " << Student_to_edit.sessions[session].subj[subj].name << " >>" ;
+                                                    cout << "Введите новую оценку по предмету \033[33m" << Student_to_edit.sessions[session].subj[subj].name << "\033[0m >>" ;
                                                     cin >> mark_to_write;
+                                                    Student_to_edit.sessions[session].subj[subj].mark = mark_to_write;
                                               }
                                               else{
                                                     cout << "Ошибка ввода повторите \n";
