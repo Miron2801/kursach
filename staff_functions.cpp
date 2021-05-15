@@ -24,7 +24,7 @@ class menu {
 							}
 					case 3:{
 							FileSystem FS("data/data.bin");
-							cout << FS.ы();
+							cout << FS.out_tabel();
 							break;	
 							}
 					case 4:

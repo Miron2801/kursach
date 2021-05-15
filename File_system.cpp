@@ -322,8 +322,8 @@ reenter_y_n:    cout << "Продолжить редактирование ? y/n
                     cout << "Ошибка ввода повтор\n";
                     goto reenter_y_n;
                 }
-                cout << "Редактирование..... 0 для пропсука параметра 1 для редактирования\n";
-                int editpos;
+                cout << "Редактирование..... 0 для пропуска параметра 1 для редактирования\n";
+                    int editpos;
 
                     printf("Имя студента >> \033[32m");
                     cin >> editpos;
@@ -436,7 +436,55 @@ reenter_y_n:    cout << "Продолжить редактирование ? y/n
                         scanf("%s", Student_to_edit.inst.CreditNumber);
                         printf("\033[0m\n");
                     }
-                EchoStudent(Student_to_edit);
+                    char continue_inputs;
+
+input_continue111:  cout << "Продолжить редактирование оценок? y/n >> ";
+                    cin >> continue_inputs;
+                    if(continue_inputs == 'n'){
+                        goto editor;
+                        cout << "Готово!";
+
+                    }
+                    if(continue_inputs == 'y'){
+
+                            
+                            for(int session = 0; session < 9; session++){   
+                                    char continue_req;
+        edit_con_label:             cout << "Начало редактирования оценок " << session + 1 << " сессии\n продолжить?"; 
+                                    if(continue_req == 'n')
+                                            continue;
+                                    if(continue_req != 'y'){
+                                        cout << "Ошиюка ввода повторите\n";
+                                        goto edit_con_label;
+                                    }                                 
+                                    for (int subj = 0; subj < 10; subj++){
+                                            if(Student_to_edit.sessions[session].subj[subj].mark != -1){
+                                              char need_to_continue;
+                  redo_act2:                  cout << "Редактирование оценки по предмету: " << Student_to_edit.sessions[session].subj[subj].name << '\n';
+                                              cout << "Продолжить редактирование? y/n >> ";
+                                              cin >> need_to_continue;
+                                              if(need_to_continue == 'n'){
+                                                  continue;
+                                              }
+                                              if(need_to_continue == 'y'){
+                                                    int mark_to_write =0;
+                                                    cout << "Введите новую оценку по предмету " << Student_to_edit.sessions[session].subj[subj].name << " >>" ;
+                                                    cin >> mark_to_write;
+                                              }
+                                              else{
+                                                    cout << "Ошибка ввода повторите \n";
+                                                    goto redo_act2;
+
+                                              }
+                                
+                                            }
+                                    }
+                            }
+                    }else{
+                        cout << "Ошибка ввода повторите \n";
+                        goto input_continue111;
+                    }
+editor:             EchoStudent(Student_to_edit);
 
                 FILE *file_edit = NULL;
                 file_edit = fopen("data/data_buff.bin", "wb");
