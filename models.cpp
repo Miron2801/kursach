@@ -65,3 +65,22 @@ int EchoStudent_not_full(int counter, person_model student){
     }
     return 0;
 }
+
+int echo_marks(person_model student){
+
+                cout << "Студент: " << student.FIO.Family << " "<< student.FIO.Name << " "<<student.FIO.Sec_name << "\n";
+                for(int session = 0; session < 9; session++){
+                    cout << "+-------------------------------------------------+" << '\n';
+                    cout << "|Сессия " << session +1 << '\n';
+                        for (int subj = 0; subj < 10; subj++){
+                            if(student.sessions[session].subj[subj].mark != -1){
+                                cout << "| " << student.sessions[session].subj[subj].name << " | " <<  student.sessions[session].subj[subj].mark << '\n';
+
+                            }
+
+                        }
+                }
+                cout << "+-------------------------------------------------+" << '\n';
+    
+    return 0;
+}

@@ -108,7 +108,7 @@ redo_input:     cout << "Продолжить ввод оценок? y/n >> \n";
                 cout << "Начало ввода оценок\n";
                 for(int session = 0; session < 9; session++){
                                 char continue_inp;
-             redo_inp_ses:      cout << "Начало ввода \033[32m"<< session + 1<<"\033[0m сессии продолжить? y/n/e >> ";
+             redo_inp_ses:      cout << "Начало ввода \033[32m"<< session + 1<<"\033[0m сессии продолжить? y/n >> ";
                                          
                                 cin >> continue_inp;
                                 if(continue_inp == 'n'){
@@ -125,6 +125,22 @@ redo_input:     cout << "Продолжить ввод оценок? y/n >> \n";
                                                 cout << "Введите оценку за предмет \033[31m "<< Student.sessions[session].subj[subj].name<<"\033[0m >> \033[32m";
                                                 cin >> Student.sessions[session].subj[subj].mark;
                                                 cout << "\033[0m";
+                                                char cont = 0;
+
+            redo_in:                            cout << "Продолжить ввод? y/n>> \033[32m" ;
+                                                cin >> cont;
+                                                if(cont == 'n'){
+                                                    cout << "Колиичество предметов в \033[32m"<< session + 1 << "\033[0mсеместе : \033[32m" << subj+1 << "\033[0m\n"; 
+                                                    break;
+                                                }
+                                                if(cont == 'y'){
+
+
+                                                }
+                                                else{
+                                                    cout << "\033[31m Ошибка ввода повтори ввод\n\033[0m";
+                                                    goto redo_in;
+                                                }
                                                 cout << "\033[31mКонец ввода предмета \n\033[0m";
                                         
                                             }
@@ -453,5 +469,66 @@ reenter_y_n:    cout << "Продолжить редактирование ? y/n
                 cout <<"успех\n";
             return 0;
 
+        }
+        int out_tabel(){
+                
+               
+
+               FILE *file2_R = NULL;
+                file2_R = fopen(FileName, "rb");
+                if (file2_R == NULL) {
+                        printf("Файл не существует\n");
+                        };
+
+redo_act11:      fseek(file2_R, 0, SEEK_SET);
+                unsigned long position = ftell(file2_R);
+                count_users = countLines(); 
+                system("clear");
+
+                 for (int i=0; i < count_users; i++){
+                        person_model Student;
+
+                        fread(&Student, sizeof(person_model), 1, file2_R);
+                        if(ftell(file2_R) == position)
+                            break;
+                        EchoStudent_not_full(i, Student);
+                        fseek(file2_R , position + sizeof(person_model), SEEK_SET );
+                        position = ftell(file2_R);
+                }
+                cout << "Табель какого пользователя вывести? \033[31m-1 - отмена \033[0m>> \033[33m";
+                int changer = 0;
+                cin >> changer;
+                cout << "\033[0m\n";
+                if(changer == -1){
+                        cout << "Выход\n";
+                        return -1;
+                }
+                if (changer > count_users){
+                        cout << "Повторите ввод данные некорректны\n";
+                        goto redo_act11;
+                }
+            
+                fseek(file2_R , 0, SEEK_SET );
+                unsigned long int pos_r = ftell (file2_R);
+                person_model Student_to_edit;
+
+                for (int i=0; i < count_users; i++){
+                        fread(&Student_to_edit, sizeof(person_model), 1, file2_R);
+                        if(ftell(file2_R) == pos_r)
+                            break;
+                        if(i == changer){
+                                 fseek(file2_R , pos_r + sizeof(person_model), SEEK_SET );
+                                 pos_r = ftell(file2_R);
+                                 echo_marks(Student_to_edit);
+                                 break;
+                        }
+
+                        fseek(file2_R , pos_r + sizeof(person_model), SEEK_SET );
+                        pos_r = ftell(file2_R);
+
+
+                }
+            
+            return 0;
         }
 };
