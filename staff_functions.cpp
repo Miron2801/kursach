@@ -4,7 +4,16 @@
 using namespace std;
 class menu{
     public:
-		
+		menu(int *code){
+			        echo_menu();
+      			    cin >> *code;
+        			memu(*code);
+        			cout << '\n';
+		}
+		~menu(){
+
+			system("clear");
+		}
         void memu(int code){
 			cout << '\n';
 			switch (code)

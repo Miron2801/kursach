@@ -6,7 +6,10 @@
 
 using namespace std;
 class FileSystem : models  {
-    public:
+    
+    friend class menu;
+
+    private:
         FILE *file = NULL;
         char *FileName;
         int count_users = 0;
