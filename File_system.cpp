@@ -30,6 +30,7 @@ private:
                }
             return cnt;
         }
+        /*
         void variant_8(person_model student){
                 int cnt_less_3 = 0;
                 for(int session = 0; session < 9; session++){
@@ -50,6 +51,32 @@ private:
                 if(persents <= 25)
                         EchoStudent(student);
                            
+        }
+        */
+        void variant_81(){
+
+            char StudyGroup_to_Select[20];
+            int session_to_Select = 0;
+            int flag_need_sort_all = 0;
+qwerrrd:    cout <<  "Введите группу где делать сортировку >> ";
+            cin >> StudyGroup_to_Select;
+            cout << "Введите сессию где сдлеать сортировку -1 для сортировки по всем >> ";
+            cin >> session_to_Select;
+            if(session_to_Select == -1){
+                    flag_need_sort_all = 1;
+                    goto asde;
+            }
+            if(session_to_Select+1 > 9 or session_to_Select < -1){
+               cout << "Ошибка ввода повторите\n";
+                goto qwerrrd;
+            }
+asde:          if(flag_need_sort_all){
+                cout << "Выбран режим режим сортировки всех сессий для группы " << StudyGroup_to_Select <<"\n";
+            }else{
+                flag
+            }
+
+
         }
 
 };    
@@ -671,7 +698,8 @@ redo_act11:      fseek(file2_R, 0, SEEK_SET);
                         fread(&Student, sizeof(person_model), 1, file2_R);
                         if(ftell(file2_R) == position)
                             break;
-                        variant->variant_8(Student);
+                        //variant->variant_8(Student);
+                        
                         fseek(file2_R , position + sizeof(person_model), SEEK_SET );
                         position = ftell(file2_R);
 
