@@ -4,10 +4,62 @@
 #include <fstream>
 #include <string>
 
+
+
 using namespace std;
+
+class variants : models{
+    friend class menu;
+    friend class FileSystem;
+
+private:
+        
+        variants(){
+            cout  << "Выполнение варианта\n";
+        }
+        ~variants(){
+            cout  << "Конец выполнения варианта 8\n";
+        }
+        int count_marks(person_model student){
+            int cnt = 0;
+               for(int session = 0; session < 9; session++){
+                        for (int subj = 0; subj < 10; subj++){
+                                if(student.sessions[session].subj[subj].mark != -1)
+                                    cnt++;
+                        }
+               }
+            return cnt;
+        }
+        void variant_8(person_model student){
+                int cnt_less_3 = 0;
+                for(int session = 0; session < 9; session++){
+                                    for (int subj = 0; subj < 10; subj++){
+                                        if(student.sessions[session].subj[subj].mark != -1 )
+                                            if(student.sessions[session].subj[subj].mark <= 3)
+                                                 cnt_less_3++;
+
+                                        
+
+                                    }
+                            }
+                int cnt_marks = count_marks(student);
+                if(cnt_marks == 0){
+                    cout << "Ошибка выполнения: нет оценок\n";
+                }
+                double persents = (float(cnt_less_3)/float(cnt_marks))*100; 
+                if(persents <= 25)
+                        EchoStudent(student);
+                           
+        }
+
+};    
+
+
+
 class FileSystem : models  {
     
     friend class menu;
+    friend class variants;
 
     private:
         FILE *file = NULL;
@@ -602,5 +654,31 @@ redo_act11:      fseek(file2_R, 0, SEEK_SET);
                 }
             
             return 0;
+        }
+        void do_sorts(){
+                                
+                variants *variant = new variants();
+                FILE *file2_R = NULL;
+                file2_R = fopen(FileName, "rb");
+                if (file2_R == NULL) {
+                        printf("Файл не существует\n");
+                        };
+                unsigned long position = ftell(file2_R);
+                count_users = countLines(); 
+                for (int i=0; i < count_users; i++){
+                        person_model Student;
+
+                        fread(&Student, sizeof(person_model), 1, file2_R);
+                        if(ftell(file2_R) == position)
+                            break;
+                        variant->variant_8(Student);
+                        fseek(file2_R , position + sizeof(person_model), SEEK_SET );
+                        position = ftell(file2_R);
+
+
+                }
+                
+                fclose(file2_R);  
+
         }
 };

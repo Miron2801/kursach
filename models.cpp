@@ -5,6 +5,8 @@ using namespace std;
 
 class models : public person_model{
     friend class FileSystem;
+    friend class variants;
+
     private:
             int EchoStudent(person_model student){
                 //if(!(student.Date_birth.day ==-1 && student.Date_birth.mounth==-1 && student.Date_birth.year == -1)){

@@ -59,6 +59,13 @@ class menu{
 							delete FS;
 							break;
 						}
+					case 7:
+						{
+							FileSystem *FS = new FileSystem("data/data.bin");
+							FS->do_sorts();
+							delete FS;
+							break;
+						}		
 					default:
 						cout << "Ошибка ввода повторите ввод";
 						break;
@@ -72,6 +79,8 @@ class menu{
 			cout << "\033[34m4: Редактирование записей\033[0m"<< "\n";
 			cout << "\033[34m5: Вывод людей в файле;\033[0m"<< "\n";
 			cout << "\033[34m6: Колличество записей в файле;\033[0m"<< "\n";			
+			cout << "\033[33m7: Сортировка;\033[0m"<< "\n";			
+
 			cout << "\033[31m0: выход;\033[0m"<< "\n";
 			cout << "Введите код: >> " ;
 		}
