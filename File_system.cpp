@@ -66,14 +66,15 @@ qwerrrd:    cout <<  "Введите группу где делать сорти
                     flag_need_sort_all = 1;
                     goto asde;
             }
-            if(session_to_Select+1 > 9 or session_to_Select < -1){
+            if(session_to_Select+1 > 10 or session_to_Select <= 0){
                cout << "Ошибка ввода повторите\n";
                 goto qwerrrd;
             }
-asde:          if(flag_need_sort_all){
+asde:       if(flag_need_sort_all){
                 cout << "Выбран режим режим сортировки всех сессий для группы " << StudyGroup_to_Select <<"\n";
             }else{
-                flag
+                cout << "Выбран режим режим сортировки "<< session_to_Select <<" сессий для группы " << StudyGroup_to_Select <<"\n";
+
             }
 
 
@@ -119,7 +120,6 @@ class FileSystem : models  {
                                 int count_students = 0;
                                 while (1){
                                                 person_model Student;
-                                                
                                                 fread(&Student, sizeof(person_model), 1, file2_R);
                                                 if(ftell(file2_R) == position)
                                                     break;
@@ -698,14 +698,14 @@ redo_act11:      fseek(file2_R, 0, SEEK_SET);
                         fread(&Student, sizeof(person_model), 1, file2_R);
                         if(ftell(file2_R) == position)
                             break;
-                        //variant->variant_8(Student);
+                        
                         
                         fseek(file2_R , position + sizeof(person_model), SEEK_SET );
                         position = ftell(file2_R);
 
 
                 }
-                
+                variant->variant_81();
                 fclose(file2_R);  
 
         }

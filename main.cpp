@@ -8,7 +8,7 @@ int main()
         menu Menu(&code);
         while (code) {
             Menu.echo_menu();
-            cin >> code;
+             cin >> code;
             Menu.memu(code);
             cout << '\n';
         }
