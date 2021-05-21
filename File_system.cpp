@@ -18,70 +18,25 @@ public:
         ~variants(){
             cout  << "Конец выполнения варианта 8\n";
         }
-        int count_marks(person_model student){
+        int count_marks(person_model student, int mark_to_select){
             int cnt = 0;
                for(int session = 0; session < 9; session++){
                         for (int subj = 0; subj < 10; subj++){
-                                if(student.sessions[session].subj[subj].mark != -1)
+                                if(student.sessions[session].subj[subj].mark == mark_to_select)
                                     cnt++;
                         }
                }
             return cnt;
         }
-        double calc_middle(person_model student, int session){
-                double result = 0.0;
-                int summ = 0;
-                int cnt = 0;
-                        for (int subj = 0; subj < 10; subj++){
-                                if(student.sessions[session].subj[subj].mark != -1){
-                                    cnt++;
-                                    summ = summ + student.sessions[session].subj[subj].mark;
-                                }
-                        }
-            if(cnt == 0){
-                //cout << "Не заполнены предметы у человека\n";
-                return 0;
-            }
-            return double(summ)/cnt;  
-        }
        
-       // bool compare_nocase (const person_model& first, const person_model& second)
-        //{
-         //   return calc_middle(first, 0) > calc_middle(second, 0);
-        //}      
             
-        void do_sort(std::list<person_model> students_buff, char StudyGroup_to_Select[20], int session_to_Select, int min_year, int max_year){
-                int flag_one_serched = 0;
-                selected_session = session_to_Select;
-                std::list<person_model> Students_sorted_by_group;
-                std::list<person_model> Students_sorted_by_marks;
-
-                for(person_model student : students_buff){
-                        if(strcmp(student.inst.StudyGroup, StudyGroup_to_Select) == 0 && student.Date_birth.year <=max_year && student.Date_birth.year >= min_year){
-                                flag_one_serched = 1;
-                                Students_sorted_by_group.push_back(student);
-                        }
-                }
-                Students_sorted_by_group.sort([this](const person_model& first, const person_model& second) {return this->calc_middle(first, this->selected_session) > this->calc_middle(second, this->selected_session);});
-                
-                cout << "\n";
-                int counter_sudents = 0;
-                for(person_model student_to_out : Students_sorted_by_group){
-                            counter_sudents++;
-                            EchoStudent_not_full(counter_sudents, student_to_out);
-                            cout << 1.0*calc_middle(student_to_out, selected_session) << "\n";
-                }
-
-        }
+            
+       
         void variant_81(std::list<person_model> students_buff){
 
-            char StudyGroup_to_Select[20];
-            int session_to_Select = 0;
-            int flag_need_sort_all = 0;
-qwerrrd:    cout <<  "Введите группу где делать сортировку >> ";
-            cin >> StudyGroup_to_Select;
-            cout << "Введите сессию где делать сортировку -1 для сортировки по всем >> ";
-            cin >> session_to_Select;
+            int mark_to_select;
+qwerrrd:    cout <<  "Введите оценку где делать выборку >> ";
+            cin >> mark_to_select;
             int year_birth_min = 0;
             int year_birth_max = 0;
             cout << "Введите нижнюю границу года рождения >> ";
@@ -93,27 +48,18 @@ qwerrrd:    cout <<  "Введите группу где делать сорти
                 cout << "Ошибка ввода повторите\n";
                 goto qwerrrd;
             }
-            
-            if(session_to_Select == -1){
-                    flag_need_sort_all = 1;
-                    goto asde;
-            }
-            if(session_to_Select < 1 | session_to_Select > 9){
-                cout << "Ошибка ввода повторите\n";
-                goto qwerrrd;
-            }
-asde:       if(flag_need_sort_all){
-                cout << "Выбран режим режим сортировки всех сессий для группы " << StudyGroup_to_Select <<"\n";
-                for(int i = 0; i < 9; i++){
-                    cout << "+==========================================================+\n";
-                    cout << "|Сессия " << i+1 << "|\n";
-                    do_sort(students_buff, StudyGroup_to_Select, i, year_birth_min, year_birth_max);
-                    cout << "+----------------------------------------------------------+\n";
-                }
-            }else{
-                cout << "Выбран режим режим сортировки " << session_to_Select<< " сессий для группы " << StudyGroup_to_Select <<"\n";
-                do_sort(students_buff, StudyGroup_to_Select, session_to_Select - 1, year_birth_min,year_birth_max);
-            }
+            cout << "Выбран режим вывод оценок студента у которого нет " << mark_to_select << "\n";
+            int iter = 0;
+            for(person_model student: students_buff){
+                    cout << count_marks(student, mark_to_select) << "\n";
+                    if(count_marks(student, mark_to_select) == 0 && student.Date_birth.year <=year_birth_max && student.Date_birth.year >= year_birth_min)
+                    { 
+                            iter++;
+                            EchoStudent_not_full(iter, student);
+                    }
+
+            }       
+
         }
 
 };    
