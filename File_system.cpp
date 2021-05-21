@@ -2,17 +2,36 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
-#include <string>
-
-
+#include <string.h>
+#include <list>
+#include <cctype>
 
 using namespace std;
+double calc_middle(person_model student, int session){
+                double result = 0.0;
+                int summ = 0;
+                int cnt = 0;
+                        for (int subj = 0; subj < 10; subj++){
+                                if(student.sessions[session].subj[subj].mark != -1){
+                                    cnt++;
+                                    summ = summ + student.sessions[session].subj[subj].mark;
+                                }
+                        }
+            if(cnt == 0){
+                //cout << "Не заполнены предметы у человека\n";
+                return 0;
+            }
+            return double(summ)/cnt;  
+        }
+bool compare_nocase (const person_model& first, const person_model& second)
+{
+  return calc_middle(first, 0) < calc_middle(second, 0)  ;
+}
 
 class variants : models{
     friend class menu;
     friend class FileSystem;
-
-private:
+public:
         
         variants(){
             cout  << "Выполнение варианта\n";
@@ -30,30 +49,46 @@ private:
                }
             return cnt;
         }
-        /*
-        void variant_8(person_model student){
-                int cnt_less_3 = 0;
-                for(int session = 0; session < 9; session++){
-                                    for (int subj = 0; subj < 10; subj++){
-                                        if(student.sessions[session].subj[subj].mark != -1 )
-                                            if(student.sessions[session].subj[subj].mark <= 3)
-                                                 cnt_less_3++;
-
-                                        
-
-                                    }
-                            }
-                int cnt_marks = count_marks(student);
-                if(cnt_marks == 0){
-                    cout << "Ошибка выполнения: нет оценок\n";
-                }
-                double persents = (float(cnt_less_3)/float(cnt_marks))*100; 
-                if(persents <= 25)
-                        EchoStudent(student);
-                           
+        double calc_middle(person_model student, int session){
+                double result = 0.0;
+                int summ = 0;
+                int cnt = 0;
+                        for (int subj = 0; subj < 10; subj++){
+                                if(student.sessions[session].subj[subj].mark != -1){
+                                    cnt++;
+                                    summ = summ + student.sessions[session].subj[subj].mark;
+                                }
+                        }
+            if(cnt == 0){
+                //cout << "Не заполнены предметы у человека\n";
+                return 0;
+            }
+            return double(summ)/cnt;  
         }
-        */
-        void variant_81(){
+       
+               
+       
+        void do_sort(std::list<person_model> students_buff, char StudyGroup_to_Select[20], int session_to_Select, int min_year, int max_year){
+                int flag_one_serched = 0;
+                std::list<person_model> Students_sorted_by_group;
+                std::list<person_model> Students_sorted_by_marks;
+
+                for(person_model student : students_buff){
+                        if(strcmp(student.inst.StudyGroup, StudyGroup_to_Select) == 0){
+                                flag_one_serched = 1;
+                                Students_sorted_by_group.push_back(student);
+                        }
+                }
+                Students_sorted_by_group.sort(compare_nocase);
+                
+
+                for(person_model student_to_out : Students_sorted_by_group){
+                            EchoStudent(student_to_out);
+                            cout << 1.0*calc_middle(student_to_out, 0) << "\n";
+                }
+
+        }
+        void variant_81(std::list<person_model> students_buff){
 
             char StudyGroup_to_Select[20];
             int session_to_Select = 0;
@@ -62,18 +97,33 @@ qwerrrd:    cout <<  "Введите группу где делать сорти
             cin >> StudyGroup_to_Select;
             cout << "Введите сессию где сдлеать сортировку -1 для сортировки по всем >> ";
             cin >> session_to_Select;
+            int year_birth_min = 0;
+            int year_birth_max = 0;
+            cout << "Введите нижнюю границу года рождения >> ";
+            cin  >> year_birth_min;
+            cout << "Введите вернхнюю границу года рождения >> ";
+            cin  >> year_birth_max;
+
+            if(year_birth_min > year_birth_max){
+                cout << "Ошибка ввода повторите\n";
+                goto qwerrrd;
+            }
+            
             if(session_to_Select == -1){
                     flag_need_sort_all = 1;
                     goto asde;
             }
-            if(session_to_Select+1 > 9 or session_to_Select < -1){
+            if(session_to_Select-1 > 8 or session_to_Select < 1){
                cout << "Ошибка ввода повторите\n";
                 goto qwerrrd;
             }
-asde:          if(flag_need_sort_all){
+asde:       if(flag_need_sort_all){
                 cout << "Выбран режим режим сортировки всех сессий для группы " << StudyGroup_to_Select <<"\n";
+                
             }else{
-                flag
+                cout << "Выбран режим режим сортировки " << session_to_Select<< " сессий для группы " << StudyGroup_to_Select <<"\n";
+                do_sort(students_buff, StudyGroup_to_Select, session_to_Select, year_birth_min,year_birth_max);
+
             }
 
 
@@ -686,6 +736,7 @@ redo_act11:      fseek(file2_R, 0, SEEK_SET);
                                 
                 variants *variant = new variants();
                 FILE *file2_R = NULL;
+                std::list<person_model> data_students;
                 file2_R = fopen(FileName, "rb");
                 if (file2_R == NULL) {
                         printf("Файл не существует\n");
@@ -697,15 +748,15 @@ redo_act11:      fseek(file2_R, 0, SEEK_SET);
 
                         fread(&Student, sizeof(person_model), 1, file2_R);
                         if(ftell(file2_R) == position)
-                            break;
-                        //variant->variant_8(Student);
-                        
+                            break;   
+                        data_students.push_back(Student);
+                     
                         fseek(file2_R , position + sizeof(person_model), SEEK_SET );
                         position = ftell(file2_R);
 
-
                 }
-                
+                variant->variant_81(data_students);
+
                 fclose(file2_R);  
 
         }
