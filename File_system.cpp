@@ -96,6 +96,7 @@ class FileSystem : models  {
         int count_users = 0;
 
         FileSystem(char* file_name){
+                system("openssl enc -aes-256-cbc -pbkdf2 -d -in data/data.bin.enc -out data/data.bin -k Я_Знаю_это_не_честно_но_я_честно_пытылся_сделать_это_нормально_средствами_api_с++_но_у_меня_не_выходило_сделать_кросплатформенную_версию_что_бы_работало_на_win_linux");
                 file = fopen(file_name, "ab+");
                 FileName = file_name;
                 count_users = countLines();
@@ -103,8 +104,11 @@ class FileSystem : models  {
         } 
 
         ~FileSystem()
-	    {
-            fclose(file);
+	    {                   fclose(file);
+                            system("openssl enc -aes-256-cbc -pbkdf2 -salt -in data/data.bin -out data/data.bin.enc -k Я_Знаю_это_не_честно_но_я_честно_пытылся_сделать_это_нормально_средствами_api_с++_но_у_меня_не_выходило_сделать_кросплатформенную_версию_что_бы_работало_на_win_linux");
+                            remove(FileName);
+                            
+                            
         }
 
         int  countLines()
