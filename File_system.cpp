@@ -27,62 +27,45 @@ public:
                         }
                }
             return cnt;
-        }
-        double calc_middle(person_model student, int session){
-                double result = 0.0;
-                int summ = 0;
-                int cnt = 0;
+        }        
+        int count_tri(person_model student){
+            int cnt = 0;
+               for(int session = 0; session < 9; session++){
                         for (int subj = 0; subj < 10; subj++){
-                                if(student.sessions[session].subj[subj].mark != -1){
+                                if(student.sessions[session].subj[subj].mark == 3)
                                     cnt++;
-                                    summ = summ + student.sessions[session].subj[subj].mark;
-                                }
                         }
-            if(cnt == 0){
-                //cout << "Не заполнены предметы у человека\n";
-                return 0;
-            }
-            return double(summ)/cnt;  
+               }
+            return cnt;
         }
+        double persents_tri(person_model student){
+            return   double(count_tri(student)) / double(count_marks(student));
+        }        
        
-       // bool compare_nocase (const person_model& first, const person_model& second)
-        //{
-         //   return calc_middle(first, 0) > calc_middle(second, 0);
-        //}      
             
-        void do_sort(std::list<person_model> students_buff, char StudyGroup_to_Select[20], int session_to_Select, int min_year, int max_year){
-                int flag_one_serched = 0;
-                selected_session = session_to_Select;
+        void do_sort(std::list<person_model> students_buff, int min_year, int max_year){
                 std::list<person_model> Students_sorted_by_group;
-                std::list<person_model> Students_sorted_by_marks;
 
                 for(person_model student : students_buff){
-                        if(strcmp(student.inst.StudyGroup, StudyGroup_to_Select) == 0 && student.Date_birth.year <=max_year && student.Date_birth.year >= min_year){
-                                flag_one_serched = 1;
+                        if(student.Date_birth.year <=max_year && student.Date_birth.year >= min_year){
                                 Students_sorted_by_group.push_back(student);
                         }
                 }
-                Students_sorted_by_group.sort([this](const person_model& first, const person_model& second) {return this->calc_middle(first, this->selected_session) > this->calc_middle(second, this->selected_session);});
+                Students_sorted_by_group.sort([this](const person_model& first, const person_model& second) {return this->persents_tri(first) > this->persents_tri(second);});
                 
                 cout << "\n";
                 int counter_sudents = 0;
                 for(person_model student_to_out : Students_sorted_by_group){
                             counter_sudents++;
                             EchoStudent_not_full(counter_sudents, student_to_out);
-                            cout << 1.0*calc_middle(student_to_out, selected_session) << "\n";
+                            cout << 100.0*persents_tri(student_to_out) << "%\n";
                 }
 
         }
-        void variant_81(std::list<person_model> students_buff){
+        void variant_91(std::list<person_model> students_buff){
 
-            char StudyGroup_to_Select[20];
-            int session_to_Select = 0;
-            int flag_need_sort_all = 0;
-qwerrrd:    cout <<  "Введите группу где делать сортировку >> ";
-            cin >> StudyGroup_to_Select;
-            cout << "Введите сессию где делать сортировку -1 для сортировки по всем >> ";
-            cin >> session_to_Select;
-            int year_birth_min = 0;
+            
+qwerrrd:    int year_birth_min = 0;
             int year_birth_max = 0;
             cout << "Введите нижнюю границу года рождения >> ";
             cin  >> year_birth_min;
@@ -93,27 +76,9 @@ qwerrrd:    cout <<  "Введите группу где делать сорти
                 cout << "Ошибка ввода повторите\n";
                 goto qwerrrd;
             }
+            cout << "Выбран режим режим сортировки по процентному сожержанию троек \n";
+            do_sort(students_buff, year_birth_min,year_birth_max);
             
-            if(session_to_Select == -1){
-                    flag_need_sort_all = 1;
-                    goto asde;
-            }
-            if(session_to_Select < 1 | session_to_Select > 9){
-                cout << "Ошибка ввода повторите\n";
-                goto qwerrrd;
-            }
-asde:       if(flag_need_sort_all){
-                cout << "Выбран режим режим сортировки всех сессий для группы " << StudyGroup_to_Select <<"\n";
-                for(int i = 0; i < 9; i++){
-                    cout << "+==========================================================+\n";
-                    cout << "|Сессия " << i+1 << "|\n";
-                    do_sort(students_buff, StudyGroup_to_Select, i, year_birth_min, year_birth_max);
-                    cout << "+----------------------------------------------------------+\n";
-                }
-            }else{
-                cout << "Выбран режим режим сортировки " << session_to_Select<< " сессий для группы " << StudyGroup_to_Select <<"\n";
-                do_sort(students_buff, StudyGroup_to_Select, session_to_Select - 1, year_birth_min,year_birth_max);
-            }
         }
 
 };    
@@ -742,7 +707,7 @@ redo_act11:      fseek(file2_R, 0, SEEK_SET);
                         position = ftell(file2_R);
 
                 }
-                variant->variant_81(data_students);
+                variant->variant_91(data_students);
 
                 fclose(file2_R);  
 
