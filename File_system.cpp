@@ -32,14 +32,12 @@ public:
             
             
        
-        void variant_81(std::list<person_model> students_buff){
+        void variant_61(std::list<person_model> students_buff){
 
             int mark_to_select;
-qwerrrd:    cout <<  "Введите оценку где делать выборку >> ";
-            cin >> mark_to_select;
             int year_birth_min = 0;
             int year_birth_max = 0;
-            cout << "Введите нижнюю границу года рождения >> ";
+ qwerrrd:   cout << "Введите нижнюю границу года рождения >> ";
             cin  >> year_birth_min;
             cout << "Введите вернхнюю границу года рождения >> ";
             cin  >> year_birth_max;
@@ -48,11 +46,10 @@ qwerrrd:    cout <<  "Введите оценку где делать выбор
                 cout << "Ошибка ввода повторите\n";
                 goto qwerrrd;
             }
-            cout << "Выбран режим вывод оценок студента у которого нет " << mark_to_select << "\n";
+            cout << "Выбран режим вывод оценок студента у которого нет 3\n";
             int iter = 0;
             for(person_model student: students_buff){
-                    cout << count_marks(student, mark_to_select) << "\n";
-                    if(count_marks(student, mark_to_select) == 0 && student.Date_birth.year <=year_birth_max && student.Date_birth.year >= year_birth_min)
+                    if(count_marks(student, 3) == 0 && student.Date_birth.year <=year_birth_max && student.Date_birth.year >= year_birth_min)
                     { 
                             iter++;
                             EchoStudent_not_full(iter, student);
@@ -688,7 +685,7 @@ redo_act11:      fseek(file2_R, 0, SEEK_SET);
                         position = ftell(file2_R);
 
                 }
-                variant->variant_81(data_students);
+                variant->variant_61(data_students);
 
                 fclose(file2_R);  
 
